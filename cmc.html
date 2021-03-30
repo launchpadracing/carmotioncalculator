@@ -1,0 +1,1271 @@
+
+
+<!DOCTYPE html>
+<html>  
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <title>LaunchPAD Racing CMC</title> 
+    <script src="opencv.js"></script>
+    </script>
+    <script>
+        var time;
+        var terminalvelocity;
+        var area;
+        function onOpenCvReady() {
+            console.log( 'OpenCV Ready', cv);
+        }
+
+        function switchpagetoresults(time, area, terminalvelocity) {
+            document.querySelector('body').innerHTML = '';
+            document.querySelector('body').innerHTML = `        <div class="placeholder">
+            <div id="p1">${ area }</div>
+            <div id="p2">${ terminalvelocity }</div>
+            <div id="p3">${ time }}</div>
+        </div>
+        <div id='header'> Statistics </div>
+        <ul class="circle">
+            <li>Frontal Area: <b class='b1'></b>
+                <div class="group">      
+                    <form id='form1' onsubmit="return changedp(1, dp1)">
+                        <input autocomplete="off" name='dp1' class='inputclass1' type="text" required>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Number of Decimal Places (Press enter to submit) </label>
+                        <button type='submit' style='display:none;'></button>
+                    </form>  
+                </div>
+            </li>
+            <li>Terminal Velocity: <b class='b2'></b>
+                <div class="group">      
+                    <form onsubmit="return changedp(2, dp2)">
+                        <input autocomplete="off" name='dp2' class='inputclass1' type="text" required>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Number of Decimal Places (Press enter to submit) </label>
+                        <button type='submit' style='display:none;'></button>
+                    </form>  
+                </div>
+            </li>
+            <li>Race Time (F1 in Schools Track): <b class='b3'></b>
+                <div class="group">    
+                    <form onsubmit="return changedp(3, dp3)">
+                        <input autocomplete="off" name='dp3' class='inputclass1' type="text" required>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Number of Decimal Places (Press enter to submit) </label>
+                        <button type='submit' style='display:none;'></button>
+                    </form>  
+                    
+                </div>
+            </li>
+            <li>
+                We have tested this on cars where we know the Race Time, and it has been within 0.01s of the actual race time, however it may not be wholly accurate as some approximations must be made
+            </li>
+        </ul>`
+            return false;
+            
+        }
+        
+        function y() {
+            time = 1.3388511561428630969317055132705718278884887695312500000000000000000000000000000000000000000000000000;
+            terminalvelocity = 16.1168693578272019806263415375724434852600097656250000000000000000000000000000000000000000000000000000;
+            area = 2227.1593873442275253182742744684219360351562500000000000000000000000000000000000000000000000000000000000;
+            document.getElementById('r1').innerHTML = area.toFixed(2).toString() + 'mm²';
+            document.getElementById('r2').innerHTML = terminalvelocity.toFixed(2).toString() + 'm/s';
+            document.getElementById('r3').innerHTML = time.toFixed(2).toString() + 's';
+            document.querySelector('#makeanalytics').style.display = 'block';
+        }
+
+        function l(blackAndWhiteImage) {
+            //(thresh, blackAndWhiteImage) = cv.threshold(grayImage, 127, 255, cv.THRESH_BINARY)
+            try { 
+                //cv.imshow("canvasOutput", blackAndWhiteImage);
+                //numberofblackpixels = blackAndWhiteImage.size - cv.countNonZero(blackAndWhiteImage)
+                console.log(blackAndWhiteImage);
+                var eachpixel = blackAndWhiteImage['data']
+                var blackcount = 0;
+                var whitecount = 0;
+                for (var i = 0; i < eachpixel.length; i++) {
+                    var pixel = eachpixel[i];
+                    if (pixel == 0) {
+                        blackcount = blackcount + 1;
+                    }
+                    else {
+                        whitecount = whitecount + 1;
+                    }
+                }
+                var percentofblack = blackcount/(whitecount+blackcount);
+                var height = blackAndWhiteImage.size().height;
+                var width = blackAndWhiteImage.size().width;
+                var heightreal = parseInt(document.querySelector('.input1').value);
+                console.log(heightreal);
+                var htp = heightreal/height
+                var widthreal = (width * heightreal) / height
+                var areainreal = heightreal * widthreal
+                var areatoshow = (areainreal * percentofblack) / 0.738;
+                var areatoshowforcalc = areatoshow / (1000**2)
+                //IMP
+                var dres1 = 0.07
+                var dres2 = 0.2
+                //IMP END
+                var numerator = dres1*2;
+                var denominator = areatoshowforcalc*1.21*dres2;
+                var v = Math.sqrt(numerator/denominator);
+                var accelerationtime = v/82.3;
+                var distanceingoingtotv = accelerationtime * 0.5 * v
+                var timeog = distanceingoingtotv/(v/2);
+                var timeafter = (20-distanceingoingtotv)/v;
+                var t = timeog + timeafter;
+                console.log(areatoshow);
+                console.log(v);
+                console.log(t);
+                time = t;
+                terminalvelocity = v;
+                area = areatoshow;
+                localStorage.setItem('time', time)
+                localStorage.setItem('terminalvelocity', v)
+                localStorage.setItem('area', areatoshow)
+                document.getElementById('r1').innerHTML = area.toFixed(2).toString() + 'mm²';
+                document.getElementById('r2').innerHTML = terminalvelocity.toFixed(2).toString() + 'm/s';
+                document.getElementById('r3').innerHTML = time.toFixed(2).toString() + 's';
+                document.querySelector('#makeanalytics').style.display = 'block';
+                return false;
+            }
+            catch(e) {
+                alert('Please Retry with a Valid Image');
+            }
+        }
+
+        function showeg(num) {
+            var imgdiv = document.querySelector('.imgdiv');
+            imgdiv.style.setOpacity = 0;
+            imgdiv.style.display = 'block';
+            imgdiv.innerHTML = `<img src='download${num}.png' id='popup'/>`;
+            jQuery(".imgdiv").addClass('fade-in');
+            var img = document.querySelector('#popup');
+            img.addEventListener('mouseleave', popupleave);
+        }
+
+        function popupleave() {
+            var imgdiv = document.querySelector('.imgdiv');
+            imgdiv.style.display = 'none';
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            //var DISABLE_EXCEPTION_CATCHING = 0;
+            Highcharts.setOptions({
+                    chart: {
+                        style: {
+                            fontFamily: 'Montserrat, sans-serif'
+                        }
+                    }
+            });
+            try {
+                let imgElement = document.getElementById('imageSrc');
+                let inputElement = document.querySelector('.input-file');
+                var form = document.querySelector('#mainform');
+                inputElement.addEventListener('change', (e) => {
+                    imgElement.src = URL.createObjectURL(e.target.files[0]);
+                }, false);
+                form.onsubmit = function() {
+                    if (document.querySelector('.input1').value.length == 0) {
+                        alert('Please Enter a Value for Height');
+                    }
+                    else {
+                        console.log('hi')
+                        let mat = cv.imread(imgElement, cv.COLOR_RGBA2GRAY);
+                        let bw = new cv.Mat();
+                        cv.threshold(mat, bw, 100,255,cv.THRESH_BINARY);
+                        l(bw);
+                        //console.log(l(bw));
+                        //get cv read on herer
+                        return false;
+                    }
+                }
+            }
+            catch(e) {
+                alert('Please Retry with a Valid Image');
+            }
+        })
+
+        function returntomain() {
+            document.querySelector('.analysisdiv').innerHTML = '';
+            document.querySelector('.analysisdiv').style.display = 'none';
+            document.querySelector('#big2').style.display = 'flex';
+        }
+        function makeanalytics() {
+            var makearray = [];
+            var makearrayexample = [];
+            var makearrayexample2 = [];
+            var makearray2 = [];
+            var attv = 0;
+            var timeattv;
+            var timeinhundreths = (time*1000).toFixed(2);
+            for (var i = 0; i < timeinhundreths; i++) {
+                if (attv == 1) {
+                    var triangle = (terminalvelocity * timeattv) / 2;
+                    var rect = ((i/1000)-timeattv) * terminalvelocity;
+                    var distance = triangle + rect;
+                    var object = [i, distance];
+                    var object2 = [i,terminalvelocity];
+                    makearray2.push(object2);
+                    makearray.push(object);
+                }
+                else {
+                    var speed = (82.3*i/1000);
+                    if (speed > terminalvelocity) {
+                        var object = [i, terminalvelocity*(i/1000)/2];
+                        makearray.push(object);
+                        var object2 = [i,terminalvelocity];
+                        makearray2.push(object2);
+                        attv = 1;
+                        timeattv = (i/1000);
+                    }
+                    else {
+                        var object = [i, speed*(i/1000)/2];
+                        makearray.push(object);
+                        var object2 = [i,speed];
+                        makearray2.push(object2);
+                    }
+                }
+
+                var objectexample = [i,20]
+                makearrayexample.push(objectexample);
+                var objectexample2 = [i,terminalvelocity]
+                makearrayexample2.push(objectexample2);
+            }
+
+            var accelerationstouse = [];
+            var x = 82.3;
+            for (var i = 0; i < (timeattv*1000); i++) {
+                var changeinaccelerationleadinguptotv = 82.3 / (timeattv*1000);
+                x = x - changeinaccelerationleadinguptotv
+                accelerationstouse.push(x);
+            }
+            console.log(accelerationstouse);
+            var attv1 = 0;
+            var prevspeed = 0;
+            var fakearrayforspeed = [];
+            var fakearrayfordistance = []
+            for (var i = 0; i < timeinhundreths; i++) {
+                if (attv1 == 1) {
+                    var fakeobject = [i,terminalvelocity];
+                    fakearrayforspeed.push(fakeobject);
+                    var triangle = (terminalvelocity * timeattv) / 2;
+                    var rect = ((i/1000)-timeattv) * terminalvelocity;
+                    var distance = triangle + rect;
+                    var objectdistance = [i, distance];
+                }
+                else {
+                    if (i >= accelerationstouse.length) {
+                        attv1 = 1;
+                    }
+                    else {
+                        var speedx = (prevspeed + (accelerationstouse[i]/1000));
+                        var speed = speedx*2
+                        prevspeed = speedx;
+                        var fakeobject = [i,speed];
+                        var objectdistance = [i, speed*(i/1000)/2];
+                        fakearrayforspeed.push(fakeobject);
+                    }
+                }
+                fakearrayfordistance.push(objectdistance);
+            }
+            console.log(fakearrayfordistance);
+            document.querySelector('#big2').style.display = 'none';
+            document.querySelector('.analysisdiv').style.display = 'flex';
+            document.querySelector('.analysisdiv').innerHTML = `<div class='col'><div class='col'><figure class="highcharts-figure">
+  <div id="container2"></div>
+  <p class="highcharts-description">
+    This chart shows how speed varies over time, you can use this to see how long it takes to reach your terminal velocity. The curved nature of this graph is due to algorithms used to take into account the effect of air resistance on the acceleration of the car.
+  </p>
+  <br>
+</figure></div><div class='col'><figure class="highcharts-figure">
+  <div id="container"></div>
+  <p class="highcharts-description">
+    This chart shows how the distance varies over time.
+  </p>
+</figure></div></div><div class='col-2 backbutton' onclick='returntomain()'><img id='backpic' style='size:small' src='backarrow.png'/>
+    </div>`;
+            var colour = '#00b2d2'
+            Highcharts.getJSON(
+            'https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/usdeur.json',
+            function (data) {
+                Highcharts.getOptions().colors.push('#00b2d2')
+                Highcharts.chart('container', {
+                chart: {
+                    zoomType: 'x'
+                },
+                title: {
+                    text: 'Distance Over Time [Graph]'
+                },
+                subtitle: {
+                    text: document.ontouchstart === undefined ?
+                    'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                },
+                xAxis: {
+                    title: {
+                        text: 'Race Time in Milliseconds'
+                    },
+                    type: 'millisecond'
+                },
+                yAxis: {
+                    title: {
+                    text: 'Distance (m)'
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                tooltip: {
+                    formatter: function() {
+                        return 'Distance : <b>' + this.y + '</b>m';
+                    }
+                },
+                plotOptions: {
+                    area: {
+                    fillColor: {
+                        linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                        },
+                        stops: [
+                        [0, colour],
+                        [1, Highcharts.color(Highcharts.getOptions().colors[10]).setOpacity(0.4).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                        lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                    }
+                },
+
+                series: [{
+                    type: 'area',
+                    name: 'Your Car',
+                    data: fakearrayfordistance
+                }, {
+                    type: 'line',
+                    name: 'Finish Line',
+                    data: makearrayexample
+
+                }]
+                });
+            }
+            );
+
+            Highcharts.getJSON(
+            'https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/usdeur.json',
+            function (data) {
+
+                Highcharts.chart('container2', {
+                chart: {
+                    zoomType: 'x'
+                },
+                title: {
+                    text: 'Speed Over Time [Graph]'
+                },
+                subtitle: {
+                    text: document.ontouchstart === undefined ?
+                    'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                },
+                xAxis: {
+                    title: {
+                        text: 'Race Time in Milliseconds'
+                    },
+                    type: 'millisecond'
+                },
+                yAxis: {
+                    title: {
+                    text: 'Speed (m/s)'
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                tooltip: {
+                    formatter: function() {
+                        return 'Speed : <b>' + this.y + '</b>m/s';
+                    }
+                },
+                plotOptions: {
+                    area: {
+                    fillColor: {
+                        linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                        },
+                        stops: [
+                        [0, colour],
+                        [1,Highcharts.color(Highcharts.getOptions().colors[10]).setOpacity(0.4).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                        lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                    }
+                },
+
+                series: [{
+                    type: 'area',
+                    name: 'Your Car',
+                    data: fakearrayforspeed
+                }, {
+                    type: 'line',
+                    name: 'Terminal Velocity',
+                    data: makearrayexample2
+
+                }]
+                });
+            }
+            );
+
+
+
+            // series: [{
+            //     name: 'Finish Line',
+            //     data: makearrayexample
+            // }, {
+            //     name: 'Your Car',
+            //     data: makearray
+            // }]
+        
+            console.log(makearray);
+            console.log(makearray2);
+        }
+
+        function changedp(numtochange) {
+            event.preventDefault();
+            var btoaddin = document.querySelector(`#r${numtochange}`); 
+            var decimalplaces = document.querySelector(`#dp${numtochange}`).value;
+            if (numtochange == 1) {
+                var value = (area.toFixed(decimalplaces)).toString() + 'mm²'
+            }
+            else if (numtochange == 2) {
+                var value = (terminalvelocity.toFixed(decimalplaces)).toString() + 'm/s'
+            }
+            else if (numtochange == 3) {
+                var value = (time.toFixed(decimalplaces)).toString() + 's'
+            }
+            btoaddin.innerHTML = value;
+            return false;
+        }
+
+    </script>
+    <style>
+
+        .fade-in {
+            opacity: 1;
+            animation-name: fadeInOpacity;
+            animation-iteration-count: 1;
+            animation-timing-function: ease-in;
+            animation-duration: 0.3s;
+        }
+
+        @keyframes fadeInOpacity {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        .fade-out {
+            opacity: 0;
+            animation-name: fadeOutOpacity;
+            animation-iteration-count: 1;
+            animation-timing-function: ease-out;
+            animation-duration: 1s;
+        }
+
+        @keyframes fadeOutOpacity {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+        #popup {
+            width: 800px;
+            height: 500px;
+            border: 3px solid slategray;
+        }
+        .imgdiv {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            z-index: 9;
+        }
+        #backpic {
+            padding: 20px;
+        }
+        .backbutton {
+            background-color: #00b2d2;
+        }
+        .backbutton:hover {
+            opacity: 0.7;
+        }
+        .highcharts-figure, .highcharts-data-table table {
+        min-width: 360px; 
+        max-width: 800px;
+        margin: 1em auto;
+        }
+
+        .highcharts-description {
+            font-weight: bolder;
+        }
+        .highcharts-data-table table {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: bold;
+            border-collapse: collapse;
+            border: 1px solid #EBEBEB;
+            margin: 10px auto;
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+        .highcharts-data-table caption {
+        padding: 1em 0;
+        font-size: 1.2em;
+        color: #555;
+        }
+        .highcharts-data-table th {
+            font-weight: 600;
+        padding: 0.5em;
+        }
+        .highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+        padding: 0.5em;
+        }
+        .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+        background: #f8f8f8;
+        }
+        .highcharts-data-table tr:hover {
+        background: #f1f7ff;
+        }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            height: 100%;
+            width:100%;
+            z-index: 2;
+            position: relative;
+        }
+        
+        .navbar {
+            height: 70px;
+            background-color: #00b2d2;
+        }
+        
+        .navbar-brand {
+            padding-top: 20px;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            text-align: left;
+            font-size: 25px;
+            letter-spacing: 2px;
+            color: white;
+        }
+        .navbar-brand > b {
+            font-weight: 900;
+        }
+        
+        #mainsub {
+            padding-top: 90px;
+            position: absolute;
+            left:18%;
+            top:10%;
+            font-size: 12px imp !important;
+            font-weight: lighter imp !important;
+            color:white;
+        }
+        
+        .navbar-default .navbar-toggle {
+            border-color: transparent;
+        }
+
+        #big {
+            width:100%;
+            display: flex;
+            height: 450px;
+        }
+        .arrow {
+            background-color: black;
+            padding: 25px;
+        }
+
+        #link > ul > button:link, #link > ul > button:visited, #link > ul > button:active {
+            color: white;
+            text-decoration:none;
+        }
+
+
+        #link, #link > li {
+            position: relative;
+            display: inline-block;
+            overflow:hidden;
+        }
+
+        .tests {
+            color: limegreen;
+            font-weight: bold;
+        }
+        #link {
+            background-color: rgba(rgb(0, 178, 210));
+            padding: 15px;
+            margin:0;
+            height:100%;
+            width:100%;
+            border-radius: 30px;
+        }
+
+        #container1 {
+            padding-left: 0px;
+            margin-left: 10px;
+        }
+
+        #link > li:hover, #link > li:focus {
+            outline: 
+            none;
+        }
+        #link > li  > button {
+            width:100%;
+            height:100px;
+            border-radius: 30px;
+            position: relative;
+            display: inline-block;
+            color: white;
+            background-color:#00b2d2;
+            border: 0px;
+            font-size:1.5em;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: 700;
+            transition: transform 0.5s ease;
+            -webkit-transition: transform 0.5s ease;
+            z-index: 5;
+        }
+        #imageSrc {
+            opacity: 0;
+            position: absolute;
+            z-index: 1 !important;
+        }
+        
+        #link > li > button:before {
+            height:100px;
+            width:100%;
+            border-radius: 30px;
+            position: absolute;
+            top: 100%;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 90px;
+            justify-content: center;
+            content: attr(title); /* The selector for Wordpress */
+            align-content: center;
+            color:#333;
+            background-color: #d1d1d1;
+            /* border: 1px dashed black; */
+            -webkit-transform: translate3d(0,0,0);
+            -moz-transform: translate3d(0,0,0);
+            transform: translate3d(0,0,0);
+            right:2px;
+            z-index: 5;
+        }
+        #link > li:hover button, #link li:focus button {
+            -webkit-transform: translateY(-100%);
+            -moz-transform: translateY(-100%);
+            transform: translateY(-100%);
+        }
+
+
+        section {
+            flex-grow: 1;
+        }
+
+        .file-drop-area {
+            position: relative;
+            display: block;
+            align-items: center;
+            width: 250px;
+            height:50px;
+            max-width: 100%;
+            padding: 25px;
+            border: 1px dashed black;
+            border-radius: 3px;
+            transition: 0.2s;
+            justify-content: center;
+        }
+
+        .fake-btn {
+            flex-shrink: 0;
+            border: 1px dashed black;
+            border-radius: 3px;
+            padding: 8px 15px;
+            margin-right: 10px;
+            font-size: 12px;
+            height:100px;
+            width:250px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .file-msg {
+            font-size: small;
+            font-weight: bolder;
+            line-height: 1.4;
+            padding: 20px;
+            width: 100%;
+        }
+        .imp {
+            font-weight: 1000;
+            text-shadow: 0px 1px, 1px 0px, 1px 1px;
+            letter-spacing: 0.5px;
+            font-weight:bold;
+            color: #00b2d2;
+        }
+
+
+        .file-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            cursor: pointer;
+            opacity: 0;
+        }
+
+        #mainform {
+            width: 100%;
+            padding: 25px;
+            display: block;
+        }
+        #big2 {
+            position: relative;
+            border-radius: 30px;
+            width:100%;
+            display: flex;
+            margin-top: -50px;
+            z-index: 9;
+            background-color: white;
+        }
+
+        .analysisdiv {
+            position: relative;
+            border-bottom: 2px dashed black;
+            border-radius: 30px;
+            width:100%;
+            display: block;
+            margin-top: -50px;
+            z-index: 9;
+            background-color: white;
+            display: none;
+        }
+        .analysisdiv > .row {
+            display: flex;
+            width: 200%;
+            height: 600px;
+            overflow-x: auto;
+        }
+
+        .input1                 {
+        font-size:12px;
+        font-weight: bold;
+        padding:10px 10px 10px 5px;
+        display:block;
+        width:200px;
+        border:none;
+        border-bottom:1px solid #757575;
+        }
+        .input1 :focus      { outline:none; }
+
+        /* LABEL ======================================= */
+        label                {
+        color:#999; 
+        font-size:12px;
+        font-weight:bolder;
+        position:absolute;
+        pointer-events:none;
+        left:5px;
+        top:10px;
+        transition:0.2s ease all; 
+        -moz-transition:0.2s ease all; 
+        -webkit-transition:0.2s ease all;
+        }
+
+        /* active state */
+        .input1:focus ~ label, .input1:valid ~ label        {
+        top:-20px;
+        font-size:10px;
+        color:#5264AE;
+        }
+
+        /* BOTTOM BARS ================================= */
+        .bar    { position:relative; display:block; width:200px; }
+        .bar:before, .bar:after     {
+        content:'';
+        height:2px; 
+        width:0;
+        bottom:1px; 
+        position:absolute;
+        background:#5264AE; 
+        transition:0.2s ease all; 
+        -moz-transition:0.2s ease all; 
+        -webkit-transition:0.2s ease all;
+        }
+        .bar:before {
+        left:50%;
+        }
+        .bar:after {
+        right:50%; 
+        }
+
+        /* active state */
+        .input1:focus ~ .bar:before, .input1:focus ~ .bar:after {
+        width:50%;
+        }
+
+        /* HIGHLIGHTER ================================== */
+        .highlight {
+        position:absolute;
+        height:60%; 
+        width:200px; 
+        top:25%; 
+        left:0;
+        pointer-events:none;
+        opacity:0.5;
+        }
+
+        /* active state */
+        .input1:focus ~ .highlight {
+        -webkit-animation:inputHighlighter 0.3s ease;
+        -moz-animation:inputHighlighter 0.3s ease;
+        animation:inputHighlighter 0.3s ease;
+        }
+
+        .top {
+            padding-top: 15px;
+            padding-bottom: 15px;
+        }
+
+        .input-file {
+            font-weight: bold;
+            top:0;
+            bottom:0;
+            right:0;
+            left:0;
+            justify-content: center;
+            position: absolute;
+            padding-top: 10px;
+            padding-left: 10px;
+        }
+
+        /* ANIMATIONS ================ */
+        @-webkit-keyframes inputHighlighter {
+            from { background:#5264AE; }
+        to  { width:0; background:transparent; }
+        }
+        @-moz-keyframes inputHighlighter {
+            from { background:#5264AE; }
+        to  { width:0; background:transparent; }
+        }
+        @keyframes inputHighlighter {
+            from { background:#5264AE; }
+        to  { width:0; background:transparent; }
+        }
+        
+        .placeholder {
+            display: none;
+        }
+        #mainwall {
+            position: relative;
+            width:100%;
+            height:100%;
+            object-fit: cover;
+            z-index: 2;
+        }
+        .buttoncontainer {
+            width: 100%;
+        }
+        #lii {
+            width: 100%;
+        }
+        .listcontainer {
+            width: 100%;
+        }
+        #header {
+                font-size: 25px;
+                font-weight: 900;
+                padding:30px;
+                text-align: left;
+                color:#00b2d2;
+        }
+        .placeholder {
+            display: none;
+        }
+        #rect {
+            margin-left: 30px;
+            width: 90%;
+            height: 80px;
+            border-radius: 70px;
+            border: 1px dashed black;
+            display: flex;
+            margin-top: 30px;
+        }
+        .rowresults {
+            width: 100%;
+            display: block;
+        }
+        .infores {
+            text-align: left;
+            padding-left: 30px;
+            padding-top: 10px;
+            font-weight: 600;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .infores > b {
+            font-size: 30px;
+            font-weight: 900;
+            color: #00b2d2;
+            display: flex;
+            margin-top: 0px;
+        }
+
+        .dpbutton {
+            height: 25px;
+            width: 25px;
+            background-color: #bbb;
+            border-radius: 50%;
+            text-align: right;
+        }
+        .rowrowresults {
+            width: 100%;
+            margin-left: 10px;
+        }
+        .ex {
+            margin-top: 20px;
+            margin-right: 0;
+            float: right;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            --c: #00b2d2;
+            color: var(--c);
+            font-size: 16px;
+            border: 0.3em solid var(--c);
+            border-radius: 0.5em;
+            width: 100%;
+            height: 50px;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-family: 'DM Sans', sans-serif;
+            letter-spacing: 0.1em;
+            text-align: center;
+            line-height: 3em;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: 0.5s;
+            margin: 1em;
+        }
+
+        nav ul li span {
+            position: absolute;
+            width: 25%;
+            height: 100%;
+            background-color: var(--c);
+            transform: translateY(150%);
+            border-radius: 50%;
+            left: calc((var(--n) - 1) * 25%);
+            transition: 0.5s;
+            transition-delay: calc((var(--n) - 1) * 0.1s);
+            z-index: -1;
+        }
+
+        nav ul li:hover {
+            color: black;
+        }
+
+        nav ul li:hover span {
+            transform: translateY(0) scale(2);
+        }
+
+        nav ul li span:nth-child(1) {
+            --n: 1;
+        }
+
+        nav ul li span:nth-child(2) {
+            --n: 2;
+        }
+
+        nav ul li span:nth-child(3) {
+            --n: 3;
+        }
+
+        nav ul li span:nth-child(4) {
+            --n: 4;
+        }
+        #makeanalytics {
+            display: none;
+        }
+        #credits {
+            font-size: small;
+
+        }
+        @media (max-width: 500px) {
+            #big2 {
+                display: block;
+            }
+            .formdp {
+                display: none;
+            }
+        }
+
+        .circleclick {
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            border-radius: 50%; /* the magic */
+            border: 5px solid lightgray;
+            -moz-border-radius: 50%;
+            -webkit-border-radius: 50%;
+            text-align: center;
+            color: white;
+            font-size: 16px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin: -7px 10px 10px 10px;
+            background-color: #00b2d2;
+        }
+        .circlecontainer {
+            display: flex;
+        }
+        .black {
+            background-color: lightgray ;
+            border: 5px solid #00b2d2 ;
+        }
+        .red {
+            background-color: #00b2d2;
+            border: 5px solid lightgray;
+        }
+        .ting {
+            display: flex;
+        }
+        #demoimage {
+            opacity: 0;
+        }
+        .demo {
+            width:100%;
+        }
+        #demoli {
+            padding-top: 20px;
+            padding-bottom: 20px;
+            width: 100%;
+            list-style-type: none;
+        }
+        #demobut {
+            width: 100%;
+            border-radius: 30px;
+            border: 0px;
+            height:100px;
+            font-size: larger;
+            font-weight: 900;
+            text-align: center;
+            background-color: #d1d1d1;
+        }
+        #text {
+            font-size:1.5em;
+            font-weight: bold;
+            padding-top: 35px;
+        }
+        #demobut :hover {
+            opacity: 0.7;
+        }
+        #textrun {
+            text-align: center;
+            vertical-align: middle;
+            line-height: 90px;
+        }
+        #ex {
+            font-size: larger;
+            color: #00b2d2;
+            text-shadow: 0px 0.5px, 0.5px 0px, 0.5px5 0.5px;
+            letter-spacing: 0.5px;
+        }
+        .ex2 {
+            padding: 4px;
+            box-shadow: 0 3px #00b2d2;
+        }
+    </style>
+</head>  
+<body>  
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <div class="navbar-brand"><b>CMC</b> Car Motion Calculator <sub id='credits'>Developed by <b>Arkin Kachroo</b> of <b>LaunchPAD Racing</b></sub></div>
+            </div>
+        </div>
+    </nav>
+    <div id='big'>
+        <img id='mainwall' src='download69.jpg'/>
+    </div>
+    <div id='big2'>
+        <div class='top col'>
+            <form id='mainform' onsubmit='x()'>  
+                <!-- <input class="input-file" type="file" name="file" />   -->
+                <div class='ting row'>
+                    <div class='col'>
+                        <div class="file-drop-area">
+                            <img id="imageSrc" alt="No Image" />
+                            <input class="input-file" type="file" name="file" required/>
+                        </div>
+                    </div>
+                    <div class="col container1">
+                        <div class="group">      
+                            <input name='height' class='input1' type="text" required>
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <label>Height of Car in mm</label>
+                        </div>
+                    </div>
+                </div>
+                <div class='row buttoncontainer'>
+                    <ul id='link'>
+                        <li id='lii'><button href="#" type='submit' title='Click Here To Submit File'><p id='textrun'>RUN</p></button> </li>
+                    </ul> 
+                </div>
+                <div class='row listcontainer'>
+                    <ul class='file-msg'>
+                        <li class='circlecontainer'><p id='ex'>Example Image - Hover Here - > </p> <div onmouseover='showeg(420)' class='circleclick red'> </div><p id='ex'>< - </p>
+                            <!-- <div onmouseover='showeg(3)' class='circleclick black'></div><div onmouseover='showeg(1)' class='circleclick red'></div></li> -->
+                        <br>
+                        <li id='demoli'>
+                            <div class='demo'>
+                                <div id='demobut' onclick='y()' title='Click Here To Submit File'><p id='text'>RUN EXAMPLE IMAGE AS DEMO</p></div>
+                            </div>
+                        </li>
+                        <br>
+                        <p id='ex' class='ex2'>Instructions For Creating the File - Scroll Down</p>
+                        <br>
+                        <li>Upload a JPEG/JPG picture of the front of the car</li>
+                        <br>
+                        <li>Use the 'Plastic Matte Black' appearance on the car for the most accurate results</li>
+                        <br>
+                        <li>Insert the height of the car. The height can be found using a 'Sketch' from the bottom of the 
+                            wheels to the top or through a 'Dimension' under the 'Inspect' Tab</li>
+                        <br>
+                        <li>Note that these instructions are for Fusion360</li>
+                        <br>
+                        <li>You will recieve your <b class='imp'>race time</b>, <b class='imp'>terminal velocity</b>, and <b class='imp'>frontal area</b> of your car </li>
+                        <br>
+                        <li>You will recieve <b class='imp'>further analysis</b> on your car in the form of <b class='imp'>graphs</b></li>
+                    </ul>
+                </div>
+            </form> 
+        </div> 
+        <div class='col-6'>
+            <div id='header'> Statistics </div>
+            <div id='rect'>
+                <div class='row rowresults'>
+                    <div class='row rowrowresults'>
+                        <div class='col infores'>
+                            FRONTAL AREA: <b id='r1'></b>
+                        </div>
+                        <div class='col-6'>
+                            <form class='formdp'  onsubmit="changedp(1)">
+                                <input placeholder='Number of Decimal Places' autocomplete="off" id='dp1' class='input1 ex' type="text" required>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id='rect'>
+                <div class='row rowresults'>
+                    <div class='row rowrowresults'>
+                        <div class='col infores'>
+                            TERMINAL VELOCITY: <b id='r2'></b>                    
+                        </div>
+                        <div class='col-6'>
+                            <form class='formdp' onsubmit="changedp(2)">
+                                <input placeholder='Number of Decimal Places' autocomplete="off" id='dp2' class='input1 ex' type="text" required>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id='rect'>
+                <div class='row rowresults'>
+                    <div class='row rowrowresults'>
+                        <div class='col infores'>
+                            TIME TAKEN: <b id='r3'></b>                
+                        </div>
+                        <div class='col-6'>
+                            <form class='formdp'  onsubmit="changedp(3)">
+                                <input placeholder='Number of Decimal Places' autocomplete="off" id='dp3' class='input1 ex' type="text" required>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id='buttonanalytics'>
+                <nav>
+                    <ul>
+                      <li id='makeanalytics' onclick="makeanalytics()">
+                        Further Analysis - Click Here For Graphs
+                        <span></span><span></span><span></span><span></span>
+                      </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class='analysisdiv'></div>
+    <div class='imgdiv'></div>
+    <div>
+        <img id='demoimage' src='download420.png'/>
+    </div>
+</body>  
+</html>  
