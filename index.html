@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>  
 <head>
@@ -167,6 +165,11 @@
         
         document.addEventListener('DOMContentLoaded', function() {
             //var DISABLE_EXCEPTION_CATCHING = 0;
+            var mq = window.matchMedia( "(max-width: 768px)" );
+            if (mq.matches) {
+                var div = document.querySelector('#buttonanalytics');
+                div.remove();
+            }
             Highcharts.setOptions({
                     chart: {
                         style: {
@@ -301,11 +304,11 @@
   </p>
 </figure></div></div><div class='col-2 backbutton' onclick='returntomain()'><img id='backpic' style='size:small' src='backarrow.png'/>
     </div>`;
-            var colour = '#00b2d2'
+            var colour = '#00ccff'
             Highcharts.getJSON(
             'https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/usdeur.json',
             function (data) {
-                Highcharts.getOptions().colors.push('#00b2d2')
+                Highcharts.getOptions().colors.push('#00ccff')
                 Highcharts.chart('container', {
                 chart: {
                     zoomType: 'x'
@@ -535,7 +538,7 @@
             padding: 20px;
         }
         .backbutton {
-            background-color: #00b2d2;
+            background-color: #00ccff;
         }
         .backbutton:hover {
             opacity: 0.7;
@@ -587,7 +590,7 @@
         
         .navbar {
             height: 70px;
-            background-color: #00b2d2;
+            background-color: #00ccff;
         }
         
         .navbar-brand {
@@ -669,7 +672,7 @@
             position: relative;
             display: inline-block;
             color: white;
-            background-color:#00b2d2;
+            background-color:#00ccff;
             border: 0px;
             font-size:1.5em;
             text-decoration: none;
@@ -697,8 +700,8 @@
             justify-content: center;
             content: attr(title); /* The selector for Wordpress */
             align-content: center;
-            color:#333;
-            background-color: #d1d1d1;
+            color:white;
+            background-color: #222;
             /* border: 1px dashed black; */
             -webkit-transform: translate3d(0,0,0);
             -moz-transform: translate3d(0,0,0);
@@ -706,6 +709,7 @@
             right:2px;
             z-index: 5;
         }
+
         #link > li:hover button, #link li:focus button {
             -webkit-transform: translateY(-100%);
             -moz-transform: translateY(-100%);
@@ -756,7 +760,7 @@
             text-shadow: 0px 1px, 1px 0px, 1px 1px;
             letter-spacing: 0.5px;
             font-weight:bold;
-            color: #00b2d2;
+            color: #00ccff;
         }
 
 
@@ -933,7 +937,7 @@
                 font-weight: 900;
                 padding:30px;
                 text-align: left;
-                color:#00b2d2;
+                color:#00ccff;
         }
         .placeholder {
             display: none;
@@ -963,9 +967,9 @@
         .infores > b {
             font-size: 30px;
             font-weight: 900;
-            color: #00b2d2;
+            color: #00ccff;
             display: flex;
-            margin-top: 0px;
+            margin-top: -13px;
         }
 
         .dpbutton {
@@ -992,7 +996,7 @@
         }
 
         nav ul li {
-            --c: #00b2d2;
+            --c: #00ccff;
             color: var(--c);
             font-size: 16px;
             border: 0.3em solid var(--c);
@@ -1055,14 +1059,6 @@
             font-size: small;
 
         }
-        @media (max-width: 500px) {
-            #big2 {
-                display: block;
-            }
-            .formdp {
-                display: none;
-            }
-        }
 
         .circleclick {
             width: 30px;
@@ -1078,17 +1074,17 @@
             text-transform: uppercase;
             font-weight: 700;
             margin: -7px 10px 10px 10px;
-            background-color: #00b2d2;
+            background-color: #00ccff;
         }
         .circlecontainer {
             display: flex;
         }
         .black {
             background-color: lightgray ;
-            border: 5px solid #00b2d2 ;
+            border: 5px solid #00ccff ;
         }
         .red {
-            background-color: #00b2d2;
+            background-color: #00ccff;
             border: 5px solid lightgray;
         }
         .ting {
@@ -1114,11 +1110,12 @@
             font-size: larger;
             font-weight: 900;
             text-align: center;
-            background-color: #d1d1d1;
+            background-color: #222;
         }
         #text {
             font-size:1.5em;
             font-weight: bold;
+            color:white;
             padding-top: 35px;
         }
         #demobut :hover {
@@ -1131,13 +1128,169 @@
         }
         #ex {
             font-size: larger;
-            color: #00b2d2;
+            color: #00ccff;
             text-shadow: 0px 0.5px, 0.5px 0px, 0.5px5 0.5px;
             letter-spacing: 0.5px;
         }
         .ex2 {
             padding: 4px;
-            box-shadow: 0 3px #00b2d2;
+            box-shadow: 0 3px #00ccff;
+        }
+        #mobiletext {
+            font-size:1.5em;
+            font-weight: bold;
+            color:white;
+            padding-top: 35px;
+            display: none;
+        }
+        @media only screen and (max-width: 768px) {
+            .navbar-brand {
+                padding-top: 15px;
+                margin-left:0;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                text-align: left;
+                font-size: 15px;
+                letter-spacing: 1px;
+                color: white;
+                display: block;
+            }
+            #credits {
+                margin-bottom: 10px;
+                font-size: 10px;
+            }
+            #big2 {
+                display: block;
+            }
+            .navbar-brand > p {
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
+            #text {
+                display: none;
+            }
+            #mobiletext {
+                display: block;
+            }
+            #link > li > button:before {
+                content: 'Submit'; 
+            }
+            .container1 {
+                padding-top: 40px;
+                padding-left: 10px;
+                margin-left: 10px;
+                padding-bottom: 40px;
+            }
+            .highlight {
+                position:absolute;
+                height:60%; 
+                width:200px;  
+                left:0;
+                pointer-events:none;
+                opacity:0.5;
+            }
+            label                {
+                color:#999; 
+                font-size:12px;
+                position:absolute;
+                top:50px;
+                font-weight:bolder;
+                pointer-events:none;
+                transition:0.2s ease all; 
+                -moz-transition:0.2s ease all; 
+                -webkit-transition:0.2s ease all;
+            }
+
+            .input1:focus ~ label, .input1:valid ~ label        {
+                top:20px;
+                font-size:10px;
+                color:#5264AE;
+            }
+            .circleclick {
+                width: 20px;
+                height: 20px;
+                line-height: 20px;
+                border-radius: 50%; 
+                border: 5px solid lightgray;
+                -moz-border-radius: 50%;
+                -webkit-border-radius: 50%;
+                text-align: center;
+                color: white;
+                font-size: 10px;
+                text-transform: uppercase;
+                font-weight: 700;
+                margin: 0px 10px 10px 10px;
+                background-color: #00ccff;
+            }
+            .m {
+                display: none;
+            }
+            #ex {
+                font-size: 15px;
+            }
+            #header {
+                width: 100%;
+            }
+            #big2 > .col-6 {
+                width: 100%;
+            }
+
+            #rect {
+                margin-left: 10px;
+                min-width: 300px !important;
+                height: 100px;
+                border-radius: 70px;
+                border: 1px dashed black;
+                display: flex;
+                margin-top: 50px;
+            }
+
+            .rowresults {
+                width: 100%;
+                display: block;
+            }
+            .rowrowresults {
+                width: 100%;
+                margin-left: 10px;
+            }
+            .infores {
+                text-align: left;
+                padding-left: 30px;
+                padding-top: 30px;
+                font-weight: 600;
+                width: 270px !important;
+                overflow-x: auto;
+                display: flex;
+            }
+
+            .infores > b {
+                font-size: 20px;
+                font-weight: 900;
+                color: #00ccff;
+                display: flex;
+                margin-top: 0px;
+                margin-left: 15px;
+            }
+
+            .dpbutton {
+                display: none;
+                height: 25px;
+                width: 25px;
+                background-color: #bbb;
+                border-radius: 50%;
+                text-align: right;
+            }
+
+            .rowrowresults > .col-6 {
+                display: none;
+            }
+            .formdp {
+                display: none;
+            }
+            #r2 {
+                margin-left: 10px;
+            }
         }
     </style>
 </head>  
@@ -1145,7 +1298,7 @@
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
-                <div class="navbar-brand"><b>CMC</b> Car Motion Calculator <small id='credits'>Developed by <b>Keeyan Mukherjee</b> of <b>LaunchPAD Racing</b></small></div>
+                <div class="navbar-brand"><p><b>CMC</b> Car Motion Calculator </p><small id='credits'>Developed by <b>Keeyan Mukherjee</b> of <b>LaunchPAD Racing</b></small></div>
                 <h1 style="display:none;">LaunchPAD Racing's Car Motion Calculator CMC F1 in schools F1s</h1>
             </div>
         </div>
@@ -1180,12 +1333,12 @@
                 </div>
                 <div class='row listcontainer'>
                     <ul class='file-msg'>
-                        <li class='circlecontainer'><p id='ex'>Example Image - Hover Here - > </p> <div onmouseover='showeg(420)' class='circleclick red'> </div><p id='ex'>< - </p>
+                        <li class='circlecontainer'><p id='ex'>Example Image - Hover Here - > </p> <div onmouseover='showeg(420)' class='circleclick red'> </div><p id='ex' class='m'>< - </p>
                             <!-- <div onmouseover='showeg(3)' class='circleclick black'></div><div onmouseover='showeg(1)' class='circleclick red'></div></li> -->
                         <br>
                         <li id='demoli'>
                             <div class='demo'>
-                                <div id='demobut' onclick='y()' title='Click Here To Submit File'><p id='text'>RUN EXAMPLE IMAGE AS DEMO</p></div>
+                                <div id='demobut' onclick='y()' title='Click Here To Submit File'><p id='text'>RUN EXAMPLE IMAGE AS DEMO</p><p id='mobiletext'>RUN EXAMPLE IMAGE</p></div>
                             </div>
                         </li>
                         <br>
@@ -1213,7 +1366,7 @@
                 <div class='row rowresults'>
                     <div class='row rowrowresults'>
                         <div class='col infores'>
-                            FRONTAL AREA: <b id='r1'></b>
+                            <p>FRONTAL AREA:</p> <b id='r1'></b>
                         </div>
                         <div class='col-6'>
                             <form class='formdp'  onsubmit="changedp(1)">
@@ -1227,7 +1380,7 @@
                 <div class='row rowresults'>
                     <div class='row rowrowresults'>
                         <div class='col infores'>
-                            TERMINAL VELOCITY: <b id='r2'></b>                    
+                            <p>TERMINAL VELOCITY:</p><b id='r2'></b>                    
                         </div>
                         <div class='col-6'>
                             <form class='formdp' onsubmit="changedp(2)">
@@ -1241,7 +1394,7 @@
                 <div class='row rowresults'>
                     <div class='row rowrowresults'>
                         <div class='col infores'>
-                            TIME TAKEN: <b id='r3'></b>                
+                            <p>TIME TAKEN:</p> <b id='r3'></b>                
                         </div>
                         <div class='col-6'>
                             <form class='formdp'  onsubmit="changedp(3)">
@@ -1270,3 +1423,4 @@
     </div>
 </body>  
 </html>  
+
