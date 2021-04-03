@@ -161,6 +161,8 @@
         function showeg(num) {
             var imgdiv = document.querySelector('.imgdiv');
             imgdiv.style.setOpacity = 0;
+            var demoimagediv = document.querySelector('.demoimagediv');
+            demoimagediv.style.display = 'block'
             imgdiv.style.display = 'block';
             imgdiv.innerHTML = `<img src='download${num}.png' id='popup'/>`;
             jQuery(".imgdiv").addClass('fade-in');
@@ -172,6 +174,8 @@
         function popupleave() {
             var imgdiv = document.querySelector('.imgdiv');
             imgdiv.style.display = 'none';
+            var demoimagediv = document.querySelector('.demoimagediv');
+            demoimagediv.style.display = 'block'
         }
         
         document.addEventListener('DOMContentLoaded', function() {
@@ -1161,6 +1165,9 @@
         #disclaimer {
             display: none;
         }
+        .demoimagediv {
+            display: none;
+        }
         @media only screen and (max-width: 768px) {
             #popup {
                 margin-left: -100px;
@@ -1447,7 +1454,7 @@
     </div>
     <div class='analysisdiv'></div>
     <div class='imgdiv'></div>
-    <div>
+    <div class='demoimagediv'>
         <img id='demoimage' src='download420.png'/>
     </div>
 </body>  
