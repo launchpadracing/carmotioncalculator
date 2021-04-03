@@ -24,7 +24,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet">
-    <title>LaunchPAD Racing's CPC</title> 
+    <title>LaunchPAD Racing CPC</title> 
     <script src="opencv.js"></script>
     </script>
     <script>
@@ -149,6 +149,8 @@
                 document.getElementById('r2').innerHTML = terminalvelocity.toFixed(2).toString() + 'm/s';
                 document.getElementById('r3').innerHTML = time.toFixed(2).toString() + 's';
                 document.querySelector('#makeanalytics').style.display = 'block';
+                var stat = document.querySelector('.statistics');
+                stat.scrollIntoView(false);
                 return false;
             }
             catch(e) {
@@ -163,6 +165,7 @@
             imgdiv.innerHTML = `<img src='download${num}.png' id='popup'/>`;
             jQuery(".imgdiv").addClass('fade-in');
             var img = document.querySelector('#popup');
+            img.addEventListener('touchmouve', popupleave);
             img.addEventListener('mouseleave', popupleave);
         }
 
@@ -1383,7 +1386,7 @@
                 </div>
             </form> 
         </div> 
-        <div class='col-6'>
+        <div class='col-6 statistics'>
             <div id='header'> Statistics </div>
             <div id='rect'>
                 <div class='row rowresults'>
