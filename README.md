@@ -1,2 +1,2 @@
-# LaunchPAD Racing's Car Motion Calculator
+# LaunchPAD Racing's Car Performance Calculator
 
