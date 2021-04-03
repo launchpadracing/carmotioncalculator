@@ -13,6 +13,14 @@
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZJGTK5Y9VC"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-ZJGTK5Y9VC');
+    </script>
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet">
@@ -169,6 +177,8 @@
             if (mq.matches) {
                 var div = document.querySelector('#buttonanalytics');
                 div.remove();
+                var p = document.querySelector('#ex');
+                p.innerHTML = 'Example Image - Click Here - > '
             }
             Highcharts.setOptions({
                     chart: {
@@ -1149,6 +1159,11 @@
             display: none;
         }
         @media only screen and (max-width: 768px) {
+            #popup {
+                margin-left: -100px;
+                width: 100%;
+                height:100%;
+            }
             #disclaimer {
                 margin-top: 20px;
                 display: block;
@@ -1307,7 +1322,7 @@
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
-                <div class="navbar-brand"><p><b>CMC</b> Car Motion Calculator </p><small id='credits'>Developed by <b>Keeyan Mukherjee</b> of <b>LaunchPAD Racing</b></small></div>
+                <div class="navbar-brand"><p><b>CPC</b> Car Performance Calculator </p><small id='credits'>Developed by <b>Keeyan Mukherjee</b> of <b>LaunchPAD Racing</b></small></div>
             </div>
         </div>
     </nav>
