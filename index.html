@@ -98,9 +98,9 @@
             time = 1.3388511561428630969317055132705718278884887695312500000000000000000000000000000000000000000000000000;
             terminalvelocity = 16.1168693578272019806263415375724434852600097656250000000000000000000000000000000000000000000000000000;
             area = 2227.1593873442275253182742744684219360351562500000000000000000000000000000000000000000000000000000000000;
-            document.getElementById('r1').innerHTML = area.toFixed(2).toString() + 'mm²';
-            document.getElementById('r2').innerHTML = terminalvelocity.toFixed(2).toString() + 'm/s';
-            document.getElementById('r3').innerHTML = time.toFixed(2).toString() + 's';
+            document.getElementById('r1').innerHTML = area.toFixed(3).toString() + 'mm²';
+            document.getElementById('r2').innerHTML = terminalvelocity.toFixed(3).toString() + 'm/s';
+            document.getElementById('r3').innerHTML = time.toFixed(3).toString() + 's';
             var mq = window.matchMedia( "(max-width: 768px)" );
             if (mq.matches) {
                 console.log('mobile');
@@ -161,9 +161,9 @@
                 localStorage.setItem('time', time)
                 localStorage.setItem('terminalvelocity', v)
                 localStorage.setItem('area', areatoshow)
-                document.getElementById('r1').innerHTML = area.toFixed(2).toString() + 'mm²';
-                document.getElementById('r2').innerHTML = terminalvelocity.toFixed(2).toString() + 'm/s';
-                document.getElementById('r3').innerHTML = time.toFixed(2).toString() + 's';
+                document.getElementById('r1').innerHTML = area.toFixed(3).toString() + 'mm²';
+                document.getElementById('r2').innerHTML = terminalvelocity.toFixed(3).toString() + 'm/s';
+                document.getElementById('r3').innerHTML = time.toFixed(3).toString() + 's';
                 var mq = window.matchMedia( "(max-width: 768px)" );
                 if (mq.matches) {
                     console.log('mobile');
