@@ -717,7 +717,6 @@
             border: 0px;
             font-size:1.5em;
             text-decoration: none;
-            text-transform: uppercase;
             font-weight: 700;
             transition: transform 0.5s ease;
             -webkit-transition: transform 0.5s ease;
@@ -771,8 +770,8 @@
             height:50px;
             max-width: 100%;
             padding: 25px;
-            border: 1px dashed black;
-            border-radius: 3px;
+            background-color: #00ccff;
+            border-radius: 15px;
             transition: 0.2s;
             justify-content: center;
         }
@@ -787,7 +786,6 @@
             height:100px;
             width:250px;
             text-align: center;
-            text-transform: uppercase;
         }
 
         .file-msg {
@@ -866,7 +864,7 @@
         font-weight:bolder;
         position:absolute;
         pointer-events:none;
-        left:5px;
+        left:15px;
         top:10px;
         transition:0.2s ease all; 
         -moz-transition:0.2s ease all; 
@@ -909,7 +907,7 @@
         .highlight {
         position:absolute;
         height:60%; 
-        width:200px; 
+        width:150px; 
         top:25%; 
         left:0;
         pointer-events:none;
@@ -929,6 +927,7 @@
         }
 
         .input-file {
+            opacity: 0;
             font-weight: bold;
             top:0;
             bottom:0;
@@ -940,6 +939,22 @@
             padding-left: 10px;
         }
 
+        #but2 {
+            font-weight: bold;
+            color: white;
+            top:0;
+            bottom:0;
+            right:0;
+            left:0;
+            justify-content: center;
+            position: absolute;
+            padding-top: 13px;
+            padding-left: 30%;
+        }
+
+        .input-file:hover {
+            cursor:pointer;
+        }
         /* ANIMATIONS ================ */
         @-webkit-keyframes inputHighlighter {
             from { background:#5264AE; }
@@ -976,7 +991,7 @@
         #header {
                 font-size: 25px;
                 font-weight: 900;
-                padding:30px;
+                padding: 30px;
                 text-align: left;
                 color:#00ccff;
         }
@@ -987,9 +1002,9 @@
             margin-left: 30px;
             width: 90%;
             height: 80px;
-            border-radius: 70px;
-            border: 1px dashed black;
             display: flex;
+            border: 5px solid #00ccff;
+            border-radius: 15px;
             margin-top: 30px;
         }
         .rowresults {
@@ -1006,11 +1021,11 @@
         }
 
         .infores > b {
-            font-size: 30px;
+            font-size: 25px;
             font-weight: 900;
             color: #00ccff;
             display: flex;
-            margin-top: -13px;
+            margin-top: -18px;
         }
 
         .dpbutton {
@@ -1044,7 +1059,6 @@
             border-radius: 0.5em;
             width: 100%;
             height: 50px;
-            text-transform: uppercase;
             font-weight: bold;
             font-family: 'DM Sans', sans-serif;
             letter-spacing: 0.1em;
@@ -1114,7 +1128,6 @@
             text-align: center;
             color: white;
             font-size: 16px;
-            text-transform: uppercase;
             font-weight: 700;
             margin: -7px 10px 10px 10px;
             background-color: white;
@@ -1173,7 +1186,6 @@
         #ex {
             font-size: larger;
             color: #00ccff;
-            text-shadow: 0px 0.3px, 0.3px 0px, 0.3px 0.3px;
             letter-spacing: 0.5px;
         }
         .ex2 {
@@ -1193,6 +1205,7 @@
         .demoimagediv {
             display: none;
         }
+        
         @media only screen and (max-width: 768px) {
             #popup {
                 margin-left: -100px;
@@ -1276,7 +1289,6 @@
                 text-align: center;
                 color: white;
                 font-size: 10px;
-                text-transform: uppercase;
                 font-weight: 700;
                 margin: 0px 10px 10px 10px;
             }
@@ -1297,8 +1309,6 @@
                 margin-left: 10px;
                 min-width: 300px !important;
                 height: 100px;
-                border-radius: 70px;
-                border: 1px dashed black;
                 display: flex;
                 margin-top: 50px;
             }
@@ -1332,11 +1342,6 @@
 
             .dpbutton {
                 display: none;
-                height: 25px;
-                width: 25px;
-                background-color: #bbb;
-                border-radius: 50%;
-                text-align: right;
             }
 
             .rowrowresults > .col-6 {
@@ -1370,6 +1375,7 @@
                     <div class='col'>
                         <div class="file-drop-area">
                             <img id="imageSrc" alt="No Image" />
+                            <p id='but2'>Select File</p>
                             <input class="input-file" type="file" name="file" required/>
                         </div>
                     </div>
@@ -1384,7 +1390,7 @@
                 </div>
                 <div class='row buttoncontainer'>
                     <ul id='link'>
-                        <li id='lii'><button href="#" type='submit' title='Click Here To Submit File'><p id='textrun'>RUN</p></button> </li>
+                        <li id='lii'><button href="#" type='submit' title='Click Here To Submit File'><p id='textrun'>Run</p></button> </li>
                     </ul> 
                 </div>
                 <div class='row listcontainer'>
@@ -1394,7 +1400,7 @@
                         <br>
                         <li id='demoli'>
                             <div class='demo'>
-                                <div id='demobut' onclick='y()' title='Click Here To Submit File'><p id='text'>RUN EXAMPLE IMAGE AS DEMO</p><p id='mobiletext'>RUN EXAMPLE IMAGE</p></div>
+                                <div id='demobut' onclick='y()' title='Click Here To Submit File'><p id='text'>Run Example Image</p><p id='mobiletext'>Run Example Image</p></div>
                             </div>
                         </li>
                         <br>
