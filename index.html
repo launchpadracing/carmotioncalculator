@@ -97,6 +97,7 @@
         }
         
         function y() {
+            clicky.goal( 'Demo Run' );
             time = 1.3388511561428630969317055132705718278884887695312500000000000000000000000000000000000000000000000000;
             terminalvelocity = 16.1168693578272019806263415375724434852600097656250000000000000000000000000000000000000000000000000000;
             area = 2227.1593873442275253182742744684219360351562500000000000000000000000000000000000000000000000000000000000;
@@ -231,6 +232,7 @@
                     }
                     else {
                         console.log('hi')
+                        clicky.goal( 'Uploaded File' );
                         let mat = cv.imread(imgElement, cv.COLOR_RGBA2GRAY);
                         let bw = new cv.Mat();
                         cv.threshold(mat, bw, 100,255,cv.THRESH_BINARY);
@@ -252,6 +254,7 @@
             document.querySelector('#big2').style.display = 'flex';
         }
         function makeanalytics() {
+            clicky.goal( 'Made Graphs' );
             var makearray = [];
             var makearrayexample = [];
             var makearrayexample2 = [];
